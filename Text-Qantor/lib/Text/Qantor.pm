@@ -40,7 +40,7 @@ use version; our $VERSION = qv('0.0.1');
     use Text::Qantor;
 
     my $qantor = Text::Qantor->new();
-    
+
 =head1 DESCRIPTION
 
 B<FILL IN>
@@ -78,7 +78,7 @@ sub _init
         XML::LibXML::RelaxNG->new(
             location =>
             File::Spec->catfile(
-                $self->_data_dir(), 
+                $self->_data_dir(),
                 "qantor-xml.rng"
             ),
         );
@@ -149,7 +149,7 @@ sub convert_input_to_xsl_fo
 
     $writer->xmlDecl("utf-8");
     $writer->startTag([$fo_ns, "root"]);
-   
+
     $writer->startTag([$fo_ns, "layout-master-set"]);
     $writer->startTag([$fo_ns, "simple-page-master"], "master-name" => "A4");
 
@@ -170,10 +170,8 @@ sub convert_input_to_xsl_fo
         $text = <$in_fh>;
     }
 
-    my $doc_tree = $parser->parse(
-        {
-            text => $text,
-        }
+    my $doc_tree = $parser->from_string(
+        $text,
     );
 
     foreach my $p (@{$doc_tree->{Text}->{Raw_Para}})
@@ -222,7 +220,7 @@ sub _write_xml_para
 
 =head2 $qantor->convert_input_to_xml({in_fh => \*STDIN, out_fh => \*STDOUT})
 
-Converts the input from the C<in_fh> filehandle to Qantor-XML and outputs it 
+Converts the input from the C<in_fh> filehandle to Qantor-XML and outputs it
 to C<out_fh>.
 
 =cut
@@ -267,11 +265,7 @@ sub convert_input_to_xml
 
     my $parser = Text::Qantor::Parser->new();
 
-    my $doc_tree = $parser->parse(
-        {
-            text => $text,
-        }
-    );
+    my $doc_tree = $parser->from_string($text);
 
     foreach my $p (@{$doc_tree->{Text}->{Raw_Para}})
     {
@@ -279,8 +273,6 @@ sub convert_input_to_xml
         $self->_write_xml_para($p);
         $writer->endTag(); # p
     }
-
-    
 
     $writer->endTag(); # body
     $writer->endTag(); # doc
@@ -326,7 +318,7 @@ sub validate_xml
     }
     else
     {
-        return { 
+        return {
             error => "RelaxNG validation failed",
             ret_code => $ret_code,
             excpetion => $@,
@@ -337,6 +329,7 @@ sub validate_xml
     return;
 }
 
+=begin Removed
 
 sub _lexer
 {
@@ -372,12 +365,12 @@ sub _lexer2
         }
         elsif ($parser->YYData->{LINE} =~ m{\A\s*\z})
         {
-            return ['EMPTY_LINE', [$parser->YYData->{LINE}, 
+            return ['EMPTY_LINE', [$parser->YYData->{LINE},
                 $parser->YYData->{LINE_COUNT}]];
         }
         return;
     };
-    
+
 
     if (!defined($parser->YYData->{LINE}))
     {
@@ -387,7 +380,7 @@ sub _lexer2
             return @$ret
         }
     }
-    
+
     while (1)
     {
         my $state = $parser->YYData->{STATE};
@@ -445,10 +438,14 @@ sub _lexer2
     die "Should not happen."
 }
 
+=end Removed
+
+=cut
+
 sub _parser_error
 {
     my ($self, $args, $yylex_params) = @_;
- 
+
     my $parser = $yylex_params->[0];
 
     if (exists $parser->YYData->{ERRMSG})

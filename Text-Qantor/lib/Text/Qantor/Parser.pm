@@ -9,19 +9,182 @@ use Text::Qantor::Parser::Elem::MacroCall;
 
 use Moose;
 
+extends ('Parser::MGC');
+
+sub new
+{
+    my $self = shift;
+
+    return $self->Parser::MGC::new(
+        patterns => {
+            ws => qr//,
+        },
+    );
+}
+
 sub parse
 {
     my $self = shift;
-    my $args = shift;
 
-    my $text = $args->{'text'};
+    return $self->_parse_Input();
+}
+
+sub _parse_Input
+{
+    my $self = shift;
+
+    my $Text = $self->_parse_Text();
+
+    $self->maybe(
+        sub {
+            $self->_parse_Empty_Line();
+        }
+    );
+
+    return { Text => $Text, };
+}
+
+sub _parse_Text
+{
+    my $self = shift;
+
+    my $paras = $self->list_of(
+        sub { $self->_parse_Empty_Line(); },
+        sub { $self->_parse_Raw_Para(); },
+    );
+
+    return {Raw_Para => $paras};
+}
+
+sub _parse_Raw_Para
+{
+    my ($self) = @_;
+
+    my $Para_Text_Wrapper_s = $self->list_of(
+        "\n",
+        sub { $self->_parse_Para_Text_Wrapper(); }
+    );
+
+=begin foo
+
+    if (!$self->at_eos() ) {
+        $self->generic_token('Single_Empty_line' => qr/(?:(?:\n\n)|(?:\n\z)|\z)/,
+            sub { my ($self, $text) = @_; return $text; },
+        );
+    }
+
+=end foo
+
+=cut
+
+    return
+    +{
+        Para_Text_Wrapper => $Para_Text_Wrapper_s,
+    };
+}
+
+sub _parse_Single_Empty_Line
+{
+    my ($self) = @_;
+
+    return $self->generic_token('Single_Empty_line' => qr/(?:^\s*(?:\n|\z))/,
+        sub { my ($self, $text) = @_; return $text; },
+    );
+}
+
+sub _parse_Empty_Line
+{
+    my $self = shift;
+
+    my $ret = $self->sequence_of(
+        sub { $self->_parse_Single_Empty_Line(); }
+    );
+
+    return $ret;
+}
+
+sub _parse_Para_Text_Wrapper
+{
+    my $self = shift;
+
+    return $self->any_of(
+        sub { $self->_parse_Plain_Para_Text(); },
+        sub { $self->_parse_Macro_Para_Text(); },
+    );
+}
+
+sub _parse_Macro_Para_Text
+{
+    my $self = shift;
+
+    # TODO : Remove this exception later.
+    die "FOOBARBAZ";
+
+    $self->_parse_MACRO_START();
+    my $name = $self->_parse_MACRO_NAME();
+    $self->_parse_MACRO_BODY_START();
+    my $inner = $self->_parse_Raw_Para();
+    $self->_parse_MACRO_BODY_END();
+
+    return;
+}
+
+sub _parse_MACRO_START
+{
+    my ($self) = @_;
+
+    return $self->generic_token('MACRO_START' => qr/(\\(?=\w))/,
+        sub { my ($self, $text) = @_; return $text; },
+    );
+}
+
+sub _parse_MACRO_NAME
+{
+    my ($self) = @_;
+
+    return $self->generic_token('MACRO_NAME' => qr/(\w+)/,
+        sub { my ($self, $text) = @_; return $text; },
+    );
+}
+
+sub _parse_MACRO_BODY_START
+{
+    my ($self) = @_;
+
+    return $self->generic_token('MACRO_BODY_START' => q/\{/,
+        sub { my ($self, $text) =  @_; return $text; },
+    );
+}
+
+sub _parse_MACRO_BODY_END
+{
+    my ($self) = @_;
+
+    return $self->generic_token('MACRO_BODY_END' => q/\}/,
+        sub { my ($self, $text) = @_; return $text; },
+    );
+}
+
+sub _parse_Plain_Para_Text
+{
+    my ($self) = @_;
+
+    my $token = $self->generic_token(
+        'Plain_Para_Text' => qr/(?:[^\\\n\{\}]+(?!\n{2})?)/,
+        sub { my ($self, $text) = @_; return {Plain_Para_Text => $text}; },
+    );
+
+    return $token;
+}
+
+=begin Removed
 
     my $parser = do {
 
         use Regexp::Grammars;
 
         qr/
-        # <logfile: - > 
+        # <logfile: - >
         # <debug: on>
 
         \A <Input> \z
@@ -37,7 +200,7 @@ sub parse
         <token: Empty_Line>
             <.Single_Empty_Line>+
         <token: Para_Text_Wrapper>
-            <Plain_Para_Text> 
+            <Plain_Para_Text>
                 |
             <Macro_Para_Text>
         <token: Macro_Para_Text>
@@ -46,30 +209,24 @@ sub parse
         <token: MACRO_NAME> <MATCH= (\w+) >
         <token: MACRO_BODY_START> <.MATCH= (?:\{) >
         <token: MACRO_BODY_END> <.MATCH= (?:\}) >
-        
+
         <token: Para_Text>
             <Macro_Para_Text>
                 |
             <Plain_Para_Text>
 
-        <token: Plain_Para_Text> <MATCH= ([^\\\n\{\}]+\n?) > 
+        <token: Plain_Para_Text> <MATCH= ([^\\\n\{\}]+\n?) >
         /msx;
 
     };
-
-    if ($text =~ $parser)
-    {
-        # use Data::Dumper;
-        # print Data::Dumper->new([\%/], ['$MATCHES_FOO'])->Dump();
-        return $/{'Input'};
-    }
-    else
-    {
-        die "Could not match text!";
-    }
 }
 
-=head1 NAME 
+=end Removed
+
+=cut
+
+
+=head1 NAME
 
 Text::Qantor::Parser - parser for Qantor.
 

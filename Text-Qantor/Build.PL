@@ -13,7 +13,7 @@ my $builder = Text::Qantor::Builder->new(
     dist_version_from   => 'lib/Text/Qantor.pm',
     build_requires => {
         'Moose' => 0,
-        'Regexp::Grammars' => 0,
+        # 'Regexp::Grammars' => 0,
         'Test::More' => 0,
         'version' => 0,
     },
