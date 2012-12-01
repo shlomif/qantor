@@ -84,7 +84,6 @@ foreach my $input_file (@files)
     );
 
     # Now let's validate the XMLs.
-    
     {
         open my $in, "<", $expected_file
             or die "Could not open '$expected_file' - $!";
