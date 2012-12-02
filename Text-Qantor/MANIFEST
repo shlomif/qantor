@@ -15,6 +15,7 @@ lib/Text/Qantor/XML/Base.pm
 lib/Text/Qantor/XML/ToXSL_FO.pm
 Makefile.PL
 MANIFEST
+META.json
 META.yml
 qantor_grammar.yp
 README
