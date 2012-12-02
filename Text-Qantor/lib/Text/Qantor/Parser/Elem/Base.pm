@@ -28,19 +28,17 @@ Initializes a new one.
 
 =cut
 
-use base 'Class::Accessor';
+use Moose;
 
-__PACKAGE__->mk_accessors(qw(
-        body
-        name
-    ));
+has 'body' => (is => 'rw', isa => 'Str');
+has 'name' => (is => 'rw', isa => 'Str');
 
 sub new
 {
     my $class = shift;
     my $self = {};
     bless $self, $class;
-    
+
     $self->_init(@_);
 
     return $self;

@@ -28,9 +28,11 @@ Initializes a new one.
 
 =cut
 
-use base 'Text::Qantor::Parser::Elem::Base';
+use Moose;
 
-__PACKAGE__->mk_accessors(qw(_list));
+extends( 'Text::Qantor::Parser::Elem::Base' );
+
+has '_list' => (is => 'rw', isa => 'ArrayRef',);
 
 sub _init
 {
