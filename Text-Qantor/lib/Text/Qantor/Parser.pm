@@ -1,4 +1,4 @@
-package Text::Qantor::Parser;
+package Text::Qantor::Parser::Foo;
 
 use strict;
 use warnings;
@@ -49,7 +49,7 @@ sub _parse_Text
     my $self = shift;
 
     my $paras = $self->list_of(
-        sub { $self->_parse_Empty_Line(); },
+        qr/(?:(?:\h*(?:\n|\z)))+/ms,
         sub { $self->_parse_Raw_Para(); },
     );
 
@@ -61,7 +61,7 @@ sub _parse_Raw_Para
     my ($self) = @_;
 
     my $Para_Text_Wrapper_s = $self->list_of(
-        "\n",
+        qr/\n(?!\n)/,
         sub { $self->_parse_Para_Text_Wrapper(); }
     );
 
@@ -87,7 +87,7 @@ sub _parse_Single_Empty_Line
 {
     my ($self) = @_;
 
-    return $self->generic_token('Single_Empty_line' => qr/(?:^\s*(?:\n|\z))/,
+    return $self->generic_token('Single_Empty_line' => qr/(?:\h*(?:\n|\z))/ms,
         sub { my ($self, $text) = @_; return $text; },
     );
 }
@@ -96,8 +96,9 @@ sub _parse_Empty_Line
 {
     my $self = shift;
 
-    my $ret = $self->sequence_of(
-        sub { $self->_parse_Single_Empty_Line(); }
+    my $ret = $self->generic_token(
+        'Single_Empty_line' => qr/(?:(?:\h*(?:\n|\z)))+/ms,
+        sub { my ($self, $text) = @_; return $text; },
     );
 
     return $ret;
@@ -118,15 +119,16 @@ sub _parse_Macro_Para_Text
     my $self = shift;
 
     # TODO : Remove this exception later.
-    die "FOOBARBAZ";
-
     $self->_parse_MACRO_START();
     my $name = $self->_parse_MACRO_NAME();
-    $self->_parse_MACRO_BODY_START();
-    my $inner = $self->_parse_Raw_Para();
-    $self->_parse_MACRO_BODY_END();
 
-    return;
+    my $inner = $self->scope_of(
+        qr/\{/,
+        sub { return $self->_parse_Raw_Para(); },
+        qr/\}/,
+    );
+
+    return { MACRO_NAME => $name, inner => $inner, };
 }
 
 sub _parse_MACRO_START
@@ -170,7 +172,7 @@ sub _parse_Plain_Para_Text
     my ($self) = @_;
 
     my $token = $self->generic_token(
-        'Plain_Para_Text' => qr/(?:[^\\\n\{\}]+(?!\n{2})?)/,
+        'Plain_Para_Text' => qr/(?:[^\\\n\{\}]+(?!\n{2})?)/ms,
         sub { my ($self, $text) = @_; return {Plain_Para_Text => $text}; },
     );
 
@@ -225,7 +227,6 @@ sub _parse_Plain_Para_Text
 
 =cut
 
-
 =head1 NAME
 
 Text::Qantor::Parser - parser for Qantor.
@@ -245,6 +246,56 @@ Parses $text using the parser.
 
 =cut
 
+package Text::Qantor::Parser;
+
+use Moose;
+
+extends ('Text::Qantor::Parser::Foo');
+
+=begin foo
+
+around qr/\A_parse/ => sub {
+    my ($orig, $self, @params) = @_;
+
+    print "In [$orig] Now is: <<" . substr($self->{str}, $self->pos()) . ">>\n";
+
+    return $self->$orig(@params);
+};
+
+=end foo
+
+=cut
+
+foreach my $meth (
+qw(
+_parse_Input
+_parse_Text
+_parse_Raw_Para
+_parse_Single_Empty_Line
+_parse_Empty_Line
+_parse_Para_Text_Wrapper
+_parse_Macro_Para_Text
+_parse_MACRO_START
+_parse_MACRO_NAME
+_parse_MACRO_BODY_START
+_parse_MACRO_BODY_END
+_parse_Plain_Para_Text
+)
+)
+{
+    around $meth => sub {
+        my ($orig, $self, @params) = @_;
+
+        print "In [$meth] Now is: <<" . substr($self->{str}, $self->pos()) . ">>\n";
+
+        my $ret = $self->$orig(@params);
+
+        use Data::Dumper;
+        print "In [$meth] consumed <<" . Dumper($ret) . ">>\n";
+
+        return $ret;
+    };
+}
 1;
 
 =begin Foo
