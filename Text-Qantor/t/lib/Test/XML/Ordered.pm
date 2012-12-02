@@ -194,7 +194,7 @@ sub _get_diag_message
     elsif ($status_struct->{param} eq "text")
     {
         return 
-            "Texts differ: Got at " . $self->_got->lineNumber(). " ; Expected at ". $self->_expected->lineNumber();
+            "Texts differ: Got at " . $self->_got->lineNumber(). " with value <<@{[$self->_got->value()]}>> ; Expected at ". $self->_expected->lineNumber() . " with value <<@{[$self->_expected->value()]}>>.";
     }
     elsif ($status_struct->{param} eq "element_name")
     {

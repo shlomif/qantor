@@ -118,8 +118,12 @@ sub _parse_Macro_Para_Text
 {
     my $self = shift;
 
-    # TODO : Remove this exception later.
-    $self->_parse_MACRO_START();
+    my $start = $self->_parse_MACRO_START();
+
+    if (! $start) {
+        $self->fail();
+    }
+
     my $name = $self->_parse_MACRO_NAME();
 
     my $inner = $self->scope_of(
@@ -175,6 +179,10 @@ sub _parse_Plain_Para_Text
         'Plain_Para_Text' => qr/(?:[^\\\n\{\}]+(?!\n{2})?)/ms,
         sub { my ($self, $text) = @_; return {Plain_Para_Text => $text}; },
     );
+
+    if (not length($token)) {
+        $self->fail();
+    }
 
     return $token;
 }
@@ -286,12 +294,12 @@ _parse_Plain_Para_Text
     around $meth => sub {
         my ($orig, $self, @params) = @_;
 
-        print "In [$meth] Now is: <<" . substr($self->{str}, $self->pos()) . ">>\n";
+        # print "In [$meth] Now is: <<" . substr($self->{str}, $self->pos()) . ">>\n";
 
         my $ret = $self->$orig(@params);
 
         use Data::Dumper;
-        print "In [$meth] consumed <<" . Dumper($ret) . ">>\n";
+        # print "In [$meth] consumed <<" . Dumper($ret) . ">>\n";
 
         return $ret;
     };
