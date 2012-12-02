@@ -180,9 +180,16 @@ sub _parse_Plain_Para_Text
         sub { my ($self, $text) = @_; return {Plain_Para_Text => $text}; },
     );
 
+    my $suffix = '';
+    if ($self->{str} =~ m/\G(?=\n)/gc) {
+        $suffix = "\n";
+    }
+
     if (not length($token)) {
         $self->fail();
     }
+
+    $token->{Plain_Para_Text} .= $suffix;
 
     return $token;
 }
