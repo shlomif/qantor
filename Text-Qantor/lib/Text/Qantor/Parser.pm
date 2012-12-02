@@ -60,8 +60,8 @@ sub _parse_Raw_Para
 {
     my ($self) = @_;
 
-    my $Para_Text_Wrapper_s = $self->list_of(
-        qr/\n(?!\n)/,
+    my $Para_Text_Wrapper_s = $self->sequence_of(
+        # qr/\n(?!\n)/,
         sub { $self->_parse_Para_Text_Wrapper(); }
     );
 
@@ -132,7 +132,7 @@ sub _parse_Macro_Para_Text
         qr/\}/,
     );
 
-    return { MACRO_NAME => $name, inner => $inner, };
+    return { Macro_Para_Text => { Raw_Para => $inner, }, };
 }
 
 sub _parse_MACRO_START
@@ -177,11 +177,11 @@ sub _parse_Plain_Para_Text
 
     my $token = $self->generic_token(
         'Plain_Para_Text' => qr/(?:[^\\\n\{\}]+(?!\n{2})?)/ms,
-        sub { my ($self, $text) = @_; return {Plain_Para_Text => $text}; },
+        sub { my ($self, $text) = @_; return $text; },
     );
 
     my $suffix = '';
-    if ($self->{str} =~ m/\G(?=\n)/gc) {
+    if ($self->maybe(sub { $self->generic_token('Foo' => qr/\n(?!\n)/, sub { 1; } ); } )) {
         $suffix = "\n";
     }
 
@@ -189,9 +189,7 @@ sub _parse_Plain_Para_Text
         $self->fail();
     }
 
-    $token->{Plain_Para_Text} .= $suffix;
-
-    return $token;
+    return {Plain_Para_Text => $token.$suffix, };
 }
 
 =begin Removed
