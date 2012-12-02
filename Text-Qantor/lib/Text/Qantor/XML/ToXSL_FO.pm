@@ -84,10 +84,10 @@ sub _init
 =head2 $converter->translate_to_xsl_fo({source => {file => $filename}, output_type => "string" })
 
 Does the actual conversion. $filename is the filename to translate (currently
-the only available source). 
+the only available source).
 
-The C<'output_type'> key specifies the return value. A value of C<'string'> returns 
-the XML as a string, and a value of C<'xml'> returns the XML as an 
+The C<'output_type'> key specifies the return value. A value of C<'string'>
+returns the XML as a string, and a value of C<'xml'> returns the XML as an
 L<XML::LibXML> DOM object.
 
 =cut

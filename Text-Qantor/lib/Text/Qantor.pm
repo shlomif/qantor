@@ -249,12 +249,12 @@ sub convert_input_to_xml
 
     $writer->xmlDecl("utf-8");
 
-    $writer->startTag("doc",
+    $writer->startTag([$qantor_xml_ns, "doc"],
         version => "0.1",
         [$xml_ns, "id"] => "index",
         [$xml_ns, "lang"] => "en",
     );
-    $writer->startTag("body");
+    $writer->startTag([ $qantor_xml_ns, "body"]);
 
     my $text;
 
@@ -269,7 +269,7 @@ sub convert_input_to_xml
 
     foreach my $p (@{$doc_tree->{Text}->{Raw_Para}})
     {
-        $writer->startTag("p");
+        $writer->startTag([$qantor_xml_ns, "p"]);
         $self->_write_xml_para($p);
         $writer->endTag(); # p
     }

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 13;
+use Test::More tests => 15;
 
 use File::Spec;
 
@@ -107,7 +107,7 @@ foreach my $input_file (@files)
             }
         );
 
-        # TEST
+        # TEST*$num_files
         ok ($fo_converter, "Initialised converter");
 
         my $string;
@@ -129,7 +129,7 @@ foreach my $input_file (@files)
         {
             open my $got_fo_fh, ">:encoding(utf-8)", $got_fo_file
                 or die "could not open";
-            print {$got_fo_fh} $got_fo_file;
+            print {$got_fo_fh} $string;
             close($got_fo_fh);
         }
 

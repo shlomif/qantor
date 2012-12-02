@@ -9,10 +9,10 @@
  />
 
 <xsl:template match="/">
-        <xsl:apply-templates select="//body" />  
+        <xsl:apply-templates select="//qant:body" />
 </xsl:template>
 
-<xsl:template match="body">
+<xsl:template match="qant:body">
     <fo:root>
         <fo:layout-master-set>
             <fo:simple-page-master master-name="A4">
@@ -21,19 +21,19 @@
         </fo:layout-master-set>
         <fo:page-sequence master-reference="A4">
             <fo:flow flow-name="xsl-region-body">
-                <xsl:apply-templates select="p" />  
+                <xsl:apply-templates select="qant:p" />
             </fo:flow>
         </fo:page-sequence>
     </fo:root>
 </xsl:template>
 
-<xsl:template match="p">
+<xsl:template match="qant:p">
     <fo:block>
         <xsl:apply-templates />
     </fo:block>
 </xsl:template>
 
-<xsl:template match="b">
+<xsl:template match="qant:b">
     <fo:inline font-weight="bold">
         <xsl:apply-templates />
     </fo:inline>
