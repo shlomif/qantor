@@ -1,6 +1,12 @@
+syntax: glob
 Text-Qantor/Build
 Text-Qantor/MYMETA.json
 Text-Qantor/MYMETA.yml
+Text-Qantor/META.json
+Text-Qantor/META.yml
+Text-Qantor/Makefile.PL
 Text-Qantor/_build
 Text-Qantor/blib
 Text-Qantor/tags
+Text-Qantor/t/data/to-xsl-fo/output-xsl-fo/*.fo
+Text-Qantor/t/data/to-xsl-fo/output-qantor-xml/*.xml
