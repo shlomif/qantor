@@ -4,8 +4,11 @@
 
 =head2 Motivation - what is Qantor?
 
-So what is Qantor? Here are a few things that Qantor aims to be, and won't
-be.
+So what is Qantor? In a nutshell Qantor is a
+B<generic and strict XML generator> primarily intended for notating
+any XML-based text grammar.
+
+Here are a few more things that Qantor aims to be, and won't be.
 
 =head3 Qantor is a generic XML generator
 
