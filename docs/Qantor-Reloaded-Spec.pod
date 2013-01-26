@@ -13,7 +13,7 @@ Qantor should be able to generate any arbitrary XML document (or even
 sever interleaved documents), with support for most modern XML non-grammar
 standards, such as XML namespaces or XLink. Furthermore, it is not limited
 to a specific grammar - it can generate XHTML, DocBook/XML, SVG, WSDL, Atom,
-or whatever.
+TEI, or whatever.
 
 =head3 Qantor is strict.
 
@@ -32,3 +32,19 @@ markup languages and writing it should be less error-prone and more enjoyable
 for the clueful user. (And there will be a provision for easily providing GUI
 editors for some applications/grammars of Qantor markup, for people who still
 find editing plaintext markup intimidating.)
+
+=head3 Qantor is not a typesetting system
+
+Qantor’s primary aim is to allow for quick, consistent, and powerful
+generation of XML documents representing rich and/or semantic text (because
+for non-textual
+or text-involving data, one should normally prefer such formats as
+L<http://en.wikipedia.org/wiki/JSON> or L<http://en.wikipedia.org/wiki/YAML>)
+such as DocBook 5/XML or TEI (or more specialised grammars such as XHTML
+or L<http://www.shlomifish.org/open-source/projects/XML-Grammar/> ).
+However, after it is done it leaves the actual translation into well-formated
+and letter-perfect text to the lower layers, who may opt to apply
+CSS transformations, use XSL-FO, or generate LaTeX or Troff from it.
+
+=head3 
+
