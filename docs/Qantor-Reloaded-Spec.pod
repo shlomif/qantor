@@ -2,7 +2,7 @@
 
 =head1 Qantor (“Qantor Ain't No Tex/Troff - Oh Really!”) Specification
 
-=head2 What is Qantor?
+=head2 Motivation - what is Qantor?
 
 So what is Qantor? Here are a few things that Qantor aims to be, and won't
 be.
@@ -46,5 +46,32 @@ However, after it is done it leaves the actual translation into well-formated
 and letter-perfect text to the lower layers, who may opt to apply
 CSS transformations, use XSL-FO, or generate LaTeX or Troff from it.
 
-=head3 
+=head3 Qantor may or may not be Turing complete
+
+Qantor's syntax will be regular and predictble (and very strict), but we cannot
+rule out that once enough features are added, as needed, it will become Turing
+complete, by accident. Many similar efforts in the past have ended up
+being Turing-complete: TeX, Troff, CSS 3.0, Haskell's type system,
+C++'s syntax, etc. By virtue of the
+L<http://en.wikipedia.org/wiki/Halting_problem>, the general case for a Turing
+program written in them, is impossible for a computer to reason about, and
+draw conclusions from. However, some analyses and transformations of programs
+written in one, can often still be performed. Furthermore, we expect that
+human editors will be able to diagnose and fix problems with misbehaving
+Qantor documents, or to judge overly complicated ones as too obfuscated,
+and reject them after the fact.
+
+We do not intend to make Qantor Turing-complete on purpose, just to note that
+the sky won't fall if it happens. Furthermore, the MediaWiki syntax, with its
+templates, was demonstrated to be Turing-complete anyway, and part of Qantor's
+ambition is to be a viable alternative (with a gradul transition path) for
+MediaWiki-based wikis in the future.
+
+=head3 Conclusion
+
+I hope I did not bore you too much with the introduction and motivation (see
+what Mark Jason Dominus has to say about it in his Conference Presentation
+Judo - L<http://perl.plover.com/yak/presentation/> ). Now I'll get to the
+actual syntax specification.
+
 
