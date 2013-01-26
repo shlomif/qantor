@@ -1,5 +1,3 @@
-=encoding utf8
-
 =head1 Qantor (“Qantor Ain't No Tex/Troff - Oh Really!”) Specification
 
 =head2 Motivation - what is Qantor?
@@ -76,5 +74,24 @@ I hope I did not bore you too much with the introduction and motivation (see
 what Mark Jason Dominus has to say about it in his Conference Presentation
 Judo - L<http://perl.plover.com/yak/presentation/> ). Now I'll get to the
 actual syntax specification.
+
+=head2 Syntax
+
+=head3 Plaintext
+
+Any standalone alphanumeric (including Unicode ones) characters and whitespace
+in Qantor are translated to the XML as plaintext. This Qantor document fragment
+will say Hello World in XHTML:
+
+    <p>Héllo World!</p>
+
+On the other hand, similar to Perl 6 regular expressions any punctuation
+character (including Unicode ones) must be escaped using a backslash, including
+a backslash itself.
+
+    <p>The newline character in C is \'\\n\'\, and we love using it\.</p>
+
+Non-escaped punctuation characters are reserved for future extensions and
+an unrecognised one may generate an exception.
 
 
