@@ -94,4 +94,32 @@ a backslash itself.
 Non-escaped punctuation characters are reserved for future extensions and
 an unrecognised one may generate an exception.
 
+(Note: if you worry about writing text with punctuation without having to
+escape every character - don't - we will soon show you how.).
 
+A backslash followed by an alphanumeric (including Unicode ones) does a
+specialised task that will be shown soon.
+
+=head3 XML Tags and Elements
+
+The Qantor syntax, while not being XML per-ce, can contain XML opening,
+closing and standalone tags. XML tags B<must> be written in proper XML
+syntax, B<must> match and B<must> correspond.
+
+Here are some examples:
+
+=over 4
+
+=item *
+
+    <p>I want this text to be <strong>bold</strong>\.</p>
+
+=item *
+
+    <p class="foo">Hello</p>
+
+=item *
+
+    <xhtml:p xmlns:rdf="..." xhtml:class="youch">[Something with rdf here]</xhtml:p>
+
+=back
