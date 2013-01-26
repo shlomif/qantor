@@ -1,0 +1,34 @@
+=encoding utf8
+
+=head1 Qantor (“Qantor Ain't No Tex/Troff - Oh Really!”) Specification
+
+=head2 What is Qantor?
+
+So what is Qantor? Here are a few things that Qantor aims to be, and won't
+be.
+
+=head3 Qantor is a generic XML generator
+
+Qantor should be able to generate any arbitrary XML document (or even
+sever interleaved documents), with support for most modern XML non-grammar
+standards, such as XML namespaces or XLink. Furthermore, it is not limited
+to a specific grammar - it can generate XHTML, DocBook/XML, SVG, WSDL, Atom,
+or whatever.
+
+=head3 Qantor is strict.
+
+Upon even a small syntax error, Qantor's syntax will generate an exception
+with the exact place where the error occured, and will refuse to process the
+document further (or possibly proceed while looking for other errors, but still
+will not output a result). This is done to maintain a good ability for machines
+(and humans) to parse, process and analyze the code.
+
+=head3 Qantor is not a lightweight markup language
+
+While one can use Qantor to generate XHTML and DocBook/XML 5, it can be used
+for more than that, and its syntax will not be constrained by such problems.
+Furthermore, its syntax will be more strict and regular than most lightweight
+markup languages and writing it should be less error-prone and more enjoyable
+for the clueful user. (And there will be a provision for easily providing GUI
+editors for some applications/grammars of Qantor markup, for people who still
+find editing plaintext markup intimidating.)
