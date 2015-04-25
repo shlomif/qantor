@@ -1,0 +1,47 @@
+Text-Qantor
+
+Qantor is a post-modern type-setting system. Qantor stands for:
+
+    "Qantor Ain't No Tex/Troff - Oh Really!"
+
+TODO : FILL MORE.
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+	perl Build.PL
+	./Build
+	./Build test
+	./Build install
+
+SUPPORT AND DOCUMENTATION
+
+After installing, you can find documentation for this module with the
+perldoc command.
+
+    perldoc Text::Qantor
+
+You can also look for information at:
+
+    RT, CPAN's request tracker
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Text-Qantor
+
+    AnnoCPAN, Annotated CPAN documentation
+        http://annocpan.org/dist/Text-Qantor
+
+    CPAN Ratings
+        http://cpanratings.perl.org/d/Text-Qantor
+
+    Search CPAN
+        http://search.cpan.org/dist/Text-Qantor
+
+    Version Control Repository:
+        http://svn.berlios.de/svnroot/repos/web-cpan/Text-Qantor/
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2008 Shlomi Fish
+
+This program is released under the following license: MIT/X11 License:
+http://www.opensource.org/licenses/mit-license.php

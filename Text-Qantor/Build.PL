@@ -16,6 +16,7 @@ my $builder = Text::Qantor::Builder->new(
         'Exporter' => 0,
         'File::Spec' => 0,
         'Moose' => 0,
+        'Parser::MGC' => 0,
         'XML::LibXML' => 0,
         'XML::LibXSLT' => 0,
         'XML::Writer' => 0,
